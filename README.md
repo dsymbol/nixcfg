@@ -44,14 +44,13 @@ mount -t btrfs -o compress=zstd,noatime,ssd,space_cache=v2 /dev/disk/by-label/RO
 
 ### Installing
 
-To install the system, select an available host from the `hosts` variable in the `flake.nix` file. In this case, we will use `vmware`.
+To install the system, define the `username` and `host` variables in the `flake.nix` file. Then select a flake URI that corresponds to one of the directory names within the hosts directory. For instance, we will opt for `vmware`.
 
 ```bash
-nixos-install --flake github:dsymbol/nixos-config#vmware
-# or
 git clone https://github.com/dsymbol/nixos-config
 cd nixos-config
 nixos-install --flake .#vmware
+reboot
 ```
 
 ## Dynamic Nature of the Repository
