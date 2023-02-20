@@ -12,9 +12,9 @@ in
   home = lib.nixosSystem {
     specialArgs = inheritable;
     modules = [
-      ./home/hardware.nix
       ./configuration.nix
-      ./home
+      ./home/hardware.nix
+      ./home/configuration.nix
       home-manager.nixosModules.home-manager
       { home-manager = hmConfig // { users.${user} = { imports = [ ./home/home.nix ]; }; }; }
     ];
@@ -23,10 +23,10 @@ in
   vmware = lib.nixosSystem {
     specialArgs = inheritable;
     modules = [
-      ./vmware/hardware.nix
       ./configuration.nix
-      ./home
-      { virtualisation.vmware.guest.enable = true; }
+      ./vmware/hardware.nix
+      ./vmware/configuration.nix
+      ./home/configuration.nix
       home-manager.nixosModules.home-manager
       { home-manager = hmConfig // { users.${user} = { imports = [ ./home/home.nix ]; }; }; }
     ];
