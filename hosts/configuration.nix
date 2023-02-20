@@ -1,4 +1,4 @@
-{ pkgs, user, host, ... }:
+{ pkgs, user, ... }:
 
 {
   time.timeZone = "Europe/Athens";
