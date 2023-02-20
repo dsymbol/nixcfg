@@ -1,7 +1,8 @@
 { pkgs, user, host, ... }:
 
 {
-  imports = [ ./hardware.nix ];
+  # Legacy BIOS
+  # boot.loader.grub.device = "/dev/sda"
 
   boot = {
     loader = {
