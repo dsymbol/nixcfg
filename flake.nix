@@ -18,8 +18,8 @@
   outputs = { nixpkgs, home-manager, ... }@inputs:
     let
       system = "x86_64-linux";
-      user = "symbol";
-      hosts = [ "home" "vmware" ];
+      user = "";
+      host = "";
 
       pkgs = import nixpkgs {
         inherit system;
@@ -35,7 +35,7 @@
     {
       nixosConfigurations = import ./hosts {
         inherit (nixpkgs) lib;
-        inherit pkgs inputs home-manager user hosts;
+        inherit pkgs inputs home-manager user host;
       };
     };
 }
