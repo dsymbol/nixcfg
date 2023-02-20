@@ -1,26 +1,34 @@
-{ lib, pkgs, inputs, home-manager, user, hosts, ... }:
+{ lib, pkgs, inputs, home-manager, user, host, ... }:
+
 let
-  mkHost = host:
-    let
-      inheritable = { inherit pkgs inputs user host; };
-      hmModule = [
-        home-manager.nixosModules.home-manager
-        {
-          home-manager = {
-            useGlobalPkgs = true;
-            useUserPackages = true;
-            extraSpecialArgs = inheritable;
-            users.${user} = { imports = [ ./${host}/home.nix ]; };
-          };
-        }
-      ];
-    in
-    lib.nixosSystem {
-      specialArgs = inheritable;
-      modules = [
-        ./configuration.nix
-        ./${host}
-      ] ++ hmModule;
-    };
+  inheritable = { inherit pkgs inputs user host; };
+  hmConfig = {
+    useGlobalPkgs = true;
+    useUserPackages = true;
+    extraSpecialArgs = inheritable;
+  };
 in
-builtins.listToAttrs (map (host: { name = host; value = mkHost host; }) hosts)
+{
+  home = lib.nixosSystem {
+    specialArgs = inheritable;
+    modules = [
+      ./home/hardware.nix
+      ./configuration.nix
+      ./home
+      home-manager.nixosModules.home-manager
+      { home-manager = hmConfig // { users.${user} = { imports = [ ./home/home.nix ]; }; }; }
+    ];
+  };
+
+  vmware = lib.nixosSystem {
+    specialArgs = inheritable;
+    modules = [
+      ./vmware/hardware.nix
+      ./configuration.nix
+      ./home
+      { virtualisation.vmware.guest.enable = true; }
+      home-manager.nixosModules.home-manager
+      { home-manager = hmConfig // { users.${user} = { imports = [ ./home/home.nix ]; }; }; }
+    ];
+  };
+}
