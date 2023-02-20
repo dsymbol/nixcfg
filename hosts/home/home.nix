@@ -11,7 +11,7 @@
       fd
       vlc
       ffmpeg
-      nixpkgs-fmt
+      rnix-lsp
       (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
     ];
     username = user;
@@ -98,6 +98,7 @@
         package = pkgs.vscode;
         userSettings = {
           "files.autoSave" = "afterDelay";
+          "nix.enableLanguageServer" = true;
         };
         # extensions = with pkgs.vscode-extensions; [
         #   jnoortheen.nix-ide
