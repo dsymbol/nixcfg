@@ -2,8 +2,8 @@
 
 let
   disk = "/dev/sda";
-  p1 = if pkgs.lib.hasPrefix "/dev/nvme" disk then disk + "p1" else "1";
-  p2 = if pkgs.lib.hasPrefix "/dev/nvme" disk then disk + "p2" else "2";
+  p1 = if pkgs.lib.hasPrefix "/dev/nvme" disk then "p1" else "1";
+  p2 = if pkgs.lib.hasPrefix "/dev/nvme" disk then "p2" else "2";
   uefi = builtins.pathExists "/sys/firmware/efi";
 
   partition =
