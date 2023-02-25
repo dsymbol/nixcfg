@@ -76,12 +76,18 @@
       enable = true;
       oh-my-zsh.enable = true;
       shellAliases = {
+        # misc
         ls = "ls -l --color=auto";
+        finds = ''() { [ -z "$1" ] && set -- "."; fd --color=never --hidden . "$1" | fzf -i --multi --cycle; }'';
+        # python
         python = "python3";
         venv = ''if [ -d "venv" ]; then source venv/bin/activate; else python -m venv venv; fi'';
-        finds = ''() { [ -z "$1" ] && set -- "."; fd --color=never --hidden . "$1" | fzf -i --multi --cycle; }'';
-        apply = "sudo nixos-rebuild switch --flake ~/nixos-config";
-        update = "nix flake update ~/nixos-config --commit-lock-file";
+        # nix
+        napply = "sudo nixos-rebuild switch --flake ~/nixos-config";
+        nupdate = "nix flake update ~/nixos-config --commit-lock-file";
+        # docker 
+        dshell = ''() { [ -z "$1" ] && set -- "ubuntu"; docker run -d -t --rm $1; docker exec -it $(docker container ls -q -n 1) /bin/sh; }'';
+        dprune = ''docker system prune -a'';
       };
       initExtra = ''
         pfetch
@@ -136,6 +142,11 @@
         mouse_bindings = [{ mouse = "Right"; action = "Paste"; }];
       };
     };
+
+    direnv = {
+      enable = true;
+      nix-direnv.enable = true;
+    };
   };
 
   xdg.configFile = {
@@ -143,5 +154,5 @@
     # kwriteconfig5 --file kscreenlockerrc --group 'Daemon' --key Autolock false
     "./kscreenlockerrc".text = "[Daemon]\nAutolock=false";
   };
-  
+
 }
