@@ -37,7 +37,7 @@
     ohMyZsh = {
       enable = true;
       theme = "gentoo";
-      plugins = [ "git" "python" "colored-man-pages" ];
+      plugins = [ "colored-man-pages" ];
     };
   };
 
