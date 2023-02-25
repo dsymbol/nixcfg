@@ -41,11 +41,13 @@
     };
   };
 
+  virtualisation.docker.enable = true;
+  
   # User configuration
   users.users.${user} = {
     isNormalUser = true;
     initialPassword = " ";
-    extraGroups = [ "wheel" "networkmanager" ];
+    extraGroups = [ "wheel" "networkmanager" "docker" ];
   };
 
   system.stateVersion = "22.11";
