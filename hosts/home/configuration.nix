@@ -12,7 +12,6 @@
       };
       grub = {
         enable = true;
-        version = 2;
         device = "nodev";
         efiSupport = true;
       };
@@ -38,7 +37,7 @@
     # openssh.enable = true;
   };
 
-  services.xserver.desktopManager.plasma5.excludePackages = with pkgs.libsForQt5; [
+  environment.plasma5.excludePackages = with pkgs.libsForQt5; [
     elisa
     gwenview
     okular
