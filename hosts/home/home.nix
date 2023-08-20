@@ -82,7 +82,17 @@
 
     zsh = {
       enable = true;
-      oh-my-zsh.enable = true;
+
+      oh-my-zsh = {
+        enable = true;
+        theme = "gentoo";
+        plugins = [ "colored-man-pages" ];
+      };
+
+      enableAutosuggestions = true;
+      enableCompletion = true;
+      syntaxHighlighting.enable = true;
+
       shellAliases = {
         # misc
         ls = "ls -l --color=auto";
@@ -92,6 +102,7 @@
         # nix
         napply = "sudo nixos-rebuild switch --flake ~/nixcfg";
         nupdate = "nix flake update ~/nixcfg";
+        hmapply = "home-manager switch --flake ~/nixcfg";
         # docker 
         dshell = ''() { [ -z "$1" ] && set -- "ubuntu"; docker run -d -t --rm $1; docker exec -it $(docker container ls -q -n 1) /bin/sh; }'';
         dprune = ''docker system prune -a'';
