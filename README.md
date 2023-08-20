@@ -4,53 +4,32 @@ This repository contains my personal NixOS configuration. By leveraging the decl
 
 ## Installation
 
-Download [NixOS](https://nixos.org/download.html) ISO and boot into it, then switch to the root user with `sudo su` command.
-
-### Partitioning
-
-Use the `parted -l` command to identify the disk you want to use for the installation.
-
-Here's an example partition scheme using /dev/sda as the device. 
-
-####  UEFI (GPT)
-
 ```bash
-# Partition the disk
-parted -s /dev/sda -- mklabel gpt
-parted -s /dev/sda -- mkpart ESP fat32 0% 500MiB
-parted -s /dev/sda -- mkpart primary 500MiB 100%
-parted -s /dev/sda -- set 1 esp on
-# Create the filesystems for the partitions
-mkfs.vfat -F 32 /dev/sda1 -n BOOT
-mkfs.btrfs /dev/sda2 -L ROOT -f
-# Mount the partitions
-mount -t btrfs -o compress=zstd,noatime,ssd,space_cache=v2 /dev/disk/by-label/ROOT /mnt
-mkdir -p /mnt/boot
-mount /dev/disk/by-label/BOOT /mnt/boot
-```
-
-#### Legacy BIOS (MBR)
-
-```bash
-# Partition the disk
-parted -s /dev/sda -- mklabel msdos
-parted -s /dev/sda -- mkpart primary 0% 100%
-parted -s /dev/sda -- set 1 boot on
-# Create the filesystems for the partitions
-mkfs.btrfs /dev/sda1 -L ROOT -f
-# Mount the partitions
-mount -t btrfs -o compress=zstd,noatime,ssd,space_cache=v2 /dev/disk/by-label/ROOT /mnt
-```
-
-### Installing
-
-To install the system, define the `username` and `host` variables in the `flake.nix` file. Then select a flake URI that corresponds to one of the directory names within the hosts directory. For instance, we will opt for `vmware`.
-
-```bash
+sudo su
 git clone https://github.com/dsymbol/nixcfg
 cd nixcfg
+nano flake.nix # define user and hostname
+```
+
+### NixOS
+
+```bash
+nix-shell ./shells/partition.nix
+partition
+exit
 nixos-install --flake .#vmware
 reboot
+```
+
+### Home-Manager Standalone
+
+```bash
+sh <(curl -L https://nixos.org/nix/install) --daemon
+echo "experimental-features = nix-command flakes" | sudo tee -a /etc/nix/nix.conf
+nix-env -iA nixpkgs.home-manager
+home-manager switch --flake .#$USER
+which zsh | sudo tee -a /etc/shells
+chsh -s $(which zsh)
 ```
 
 ## Dynamic Nature of the Repository
