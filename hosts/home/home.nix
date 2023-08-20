@@ -123,10 +123,29 @@
         userSettings = {
           "files.autoSave" = "afterDelay";
           "nix.enableLanguageServer" = true;
+          "editor.fontSize" = 17;
+          "redhat.telemetry.enabled" = false;
+          "workbench.colorTheme" = "Visual Studio Light";
+          "workbench.startupEditor" = "none";
+          "python.analysis.autoImportCompletions" = true;
+          "python.analysis.autoFormatStrings" = true;
+          "[python]" = {
+            "editor.defaultFormatter" = "ms-python.black-formatter";
+            "editor.formatOnSave" = true;
+            "editor.codeActionsOnSave" = {
+              "source.organizeImports" = true;
+            };
+          };
+          "isort.args" = [
+            "--profile"
+            "black"
+          ];
+          "explorer.confirmDelete" = false;
         };
         extensions = with pkgs.vscode-extensions; [
           jnoortheen.nix-ide
           ms-python.python
+          ms-python.vscode-pylance
           streetsidesoftware.code-spell-checker
           # ms-vscode.powershell
           foxundermoon.shell-format
