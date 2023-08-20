@@ -1,4 +1,4 @@
-# nixos-config
+# nixcfg
 
 This repository contains my personal NixOS configuration. By leveraging the declarative and reproducible nature of NixOS, I can maintain a deterministic system configuration that can be easily replicated. My configuration includes packages, system services, and user-level configuration files tailored to my needs and preferences.
 
@@ -47,8 +47,8 @@ mount -t btrfs -o compress=zstd,noatime,ssd,space_cache=v2 /dev/disk/by-label/RO
 To install the system, define the `username` and `host` variables in the `flake.nix` file. Then select a flake URI that corresponds to one of the directory names within the hosts directory. For instance, we will opt for `vmware`.
 
 ```bash
-git clone https://github.com/dsymbol/nixos-config
-cd nixos-config
+git clone https://github.com/dsymbol/nixcfg
+cd nixcfg
 nixos-install --flake .#vmware
 reboot
 ```
