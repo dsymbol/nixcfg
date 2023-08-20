@@ -37,5 +37,11 @@
         inherit (nixpkgs) lib;
         inherit pkgs inputs home-manager user host;
       };
+
+      homeConfigurations.${user} = home-manager.lib.homeManagerConfiguration {
+        inherit pkgs;
+        extraSpecialArgs = { inherit inputs user; };
+        modules = [ ./hosts/home/home.nix ];
+      };
     };
 }
