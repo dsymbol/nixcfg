@@ -52,12 +52,16 @@
             // enable search and form history
             user_pref("browser.formfill.enable", true);
             // keep data on shutdown
+            user_pref("privacy.clearOnShutdown.cache", false);
+            user_pref("privacy.clearOnShutdown_v2.cache", false);
+            user_pref("privacy.clearOnShutdown.downloads", false);
             user_pref("privacy.clearOnShutdown.formdata", false);
             user_pref("privacy.clearOnShutdown.history", false);
+            user_pref("privacy.clearOnShutdown_v2.historyFormDataAndDownloads", false);
             user_pref("privacy.clearOnShutdown.cookies", false);
             user_pref("privacy.clearOnShutdown.offlineApps", false);
-            // resume previous session
-            user_pref("browser.startup.page", 3);
+            user_pref("privacy.clearOnShutdown.sessions", false);
+            user_pref("privacy.clearOnShutdown_v2.cookiesAndStorage", false);
             // show bookmarks toolbar at all times
             user_pref("browser.toolbars.bookmarks.visibility", "always");
             // disable firefox view
