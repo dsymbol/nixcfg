@@ -68,6 +68,8 @@
             user_pref("browser.tabs.firefox-view", false);
             // extra session data
             user_pref("browser.sessionstore.privacy_level", 0);
+            user_pref("privacy.cpd.offlineApps", false);
+            user_pref("privacy.cpd.history", false);
           ''
         ];
       };
