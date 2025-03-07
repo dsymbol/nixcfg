@@ -2,6 +2,7 @@
 
 { 
   virtualisation.vmware.guest.enable = true; 
-  services.xserver.displayManager.autoLogin.enable = true;
-  services.xserver.displayManager.autoLogin.user = user;
+  services.displayManager.autoLogin.enable = true;
+  services.displayManager.autoLogin.user = user;
+  services.openssh.enable = true;
 }

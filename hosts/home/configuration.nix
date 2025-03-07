@@ -26,28 +26,22 @@
 
   # List services that you want to enable:
   services = {
-    xserver = {
-      # Enable the X11 windowing system.
-      enable = true;
-      excludePackages = [ pkgs.xterm ];
-      # Enable the Plasma 5 Desktop Environment.
-      displayManager.sddm.enable = true;
-      desktopManager.plasma5.enable = true;
-    };
+    displayManager.sddm.enable = true;
+    desktopManager.plasma6.enable = true;
     # openssh.enable = true;
   };
 
-  environment.plasma5.excludePackages = with pkgs.libsForQt5; [
-    elisa
-    gwenview
-    okular
-    oxygen
-    khelpcenter
-    plasma-browser-integration
-    print-manager
-    spectacle
-    kwalletmanager
-    kinfocenter
-  ];
+  # environment.plasma6.excludePackages = with pkgs.kdePackages; [
+  #   elisa
+  #   gwenview
+  #   okular
+  #   oxygen
+  #   khelpcenter
+  #   plasma-browser-integration
+  #   print-manager
+  #   spectacle
+  #   kwalletmanager
+  #   kinfocenter
+  # ];
 
 }

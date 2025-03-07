@@ -1,18 +1,11 @@
 {
-  description = "NixOS Deterministic Configurations";
+  description = "NixOS System Configuration";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
     home-manager.url = "github:nix-community/home-manager/master";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
-
-    nur.url = "github:nix-community/NUR";
-
-    arkenfox-userjs = {
-      url = "github:arkenfox/user.js";
-      flake = false;
-    };
   };
 
   outputs = { nixpkgs, home-manager, ... }@inputs:
@@ -28,7 +21,6 @@
           allowUnsupportedSystem = true;
           allowUnfree = true;
         };
-        overlays = [ inputs.nur.overlay ];
       };
 
     in

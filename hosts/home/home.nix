@@ -21,57 +21,17 @@
       pfetch
       vlc
       ffmpeg
-      rnix-lsp
+      nixd
     ];
     username = user;
     homeDirectory = "/home/${user}";
   };
 
   programs = {
-    firefox = {
+    librewolf = {
       enable = true;
-      profiles.default = {
-        id = 0;
-        name = "Default";
-        isDefault = true;
-        search.default = "DuckDuckGo";
-        extensions = with pkgs.nur.repos.rycee.firefox-addons; [
-          ublock-origin
-          canvasblocker
-          skip-redirect
-          bitwarden
-        ];
-        extraConfig = lib.strings.concatStrings [
-          (builtins.readFile "${inputs.arkenfox-userjs}/user.js")
-          ''
-            // enable location bar search
-            user_pref("keyword.enabled", true);
-            // enable live search suggestions
-            user_pref("browser.search.suggest.enabled", true);
-            user_pref("browser.urlbar.suggest.searches", true);
-            // enable search and form history
-            user_pref("browser.formfill.enable", true);
-            // keep data on shutdown
-            user_pref("privacy.clearOnShutdown.cache", false);
-            user_pref("privacy.clearOnShutdown_v2.cache", false);
-            user_pref("privacy.clearOnShutdown.downloads", false);
-            user_pref("privacy.clearOnShutdown.formdata", false);
-            user_pref("privacy.clearOnShutdown.history", false);
-            user_pref("privacy.clearOnShutdown_v2.historyFormDataAndDownloads", false);
-            user_pref("privacy.clearOnShutdown.cookies", false);
-            user_pref("privacy.clearOnShutdown.offlineApps", false);
-            user_pref("privacy.clearOnShutdown.sessions", false);
-            user_pref("privacy.clearOnShutdown_v2.cookiesAndStorage", false);
-            // show bookmarks toolbar at all times
-            user_pref("browser.toolbars.bookmarks.visibility", "always");
-            // disable firefox view
-            user_pref("browser.tabs.firefox-view", false);
-            // extra session data
-            user_pref("browser.sessionstore.privacy_level", 0);
-            user_pref("privacy.cpd.offlineApps", false);
-            user_pref("privacy.cpd.history", false);
-          ''
-        ];
+      settings = {
+        "identity.fxaccounts.enabled" = true;
       };
     };
 
@@ -95,7 +55,7 @@
         plugins = [ "colored-man-pages" ];
       };
 
-      enableAutosuggestions = true;
+      autosuggestion.enable = true;
       enableCompletion = true;
       syntaxHighlighting.enable = true;
 
@@ -126,37 +86,27 @@
       {
         enable = true;
         package = pkgs.vscode;
-        userSettings = {
-          "files.autoSave" = "afterDelay";
-          "nix.enableLanguageServer" = true;
-          "editor.fontSize" = 17;
-          "redhat.telemetry.enabled" = false;
-          "workbench.colorTheme" = "Visual Studio Light";
-          "workbench.startupEditor" = "none";
-          "python.analysis.autoImportCompletions" = true;
-          "python.analysis.autoFormatStrings" = true;
-          "[python]" = {
-            "editor.defaultFormatter" = "ms-python.black-formatter";
-            "editor.formatOnSave" = true;
-            "editor.codeActionsOnSave" = {
-              "source.organizeImports" = true;
+        profiles.default = {
+          extensions = with pkgs.vscode-extensions; [
+            jnoortheen.nix-ide
+          ];
+          userSettings = {
+            "files.autoSave" = "afterDelay";
+            "explorer.confirmDelete" = false;
+            "nix.enableLanguageServer" = true;
+            "nix.serverPath" = "nixd";
+
+            "[python]" = {
+              "editor.defaultFormatter" = "ms-python.black-formatter";
+              "editor.formatOnSave" = true;
+              "editor.codeActionsOnSave" = {
+                "source.organizeImports" = "explicit";
+                "source.unusedImports" = "explicit";
+              };
             };
           };
-          "isort.args" = [
-            "--profile"
-            "black"
-          ];
-          "explorer.confirmDelete" = false;
         };
-        extensions = with pkgs.vscode-extensions; [
-          jnoortheen.nix-ide
-          ms-python.python
-          ms-python.vscode-pylance
-          streetsidesoftware.code-spell-checker
-          # ms-vscode.powershell
-          foxundermoon.shell-format
-          redhat.vscode-yaml
-        ];
+
       };
 
     fzf = {
