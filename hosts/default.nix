@@ -1,34 +1,57 @@
-{ lib, pkgs, inputs, home-manager, user, host, ... }:
+{
+  nixpkgs,
+  inputs,
+  home-manager,
+  username,
+  ...
+}:
+
+{
+  host,
+  system,
+}:
 
 let
-  inheritable = { inherit pkgs inputs user host; };
-  hmConfig = {
-    useGlobalPkgs = true;
-    useUserPackages = true;
-    extraSpecialArgs = inheritable;
+  inheritable = {
+    inherit
+      inputs
+      username
+      host
+      ;
   };
 in
-{
-  home = lib.nixosSystem {
-    specialArgs = inheritable;
-    modules = [
-      ./configuration.nix
-      ./home/hardware.nix
-      ./home/configuration.nix
-      home-manager.nixosModules.home-manager
-      { home-manager = hmConfig // { users.${user} = { imports = [ ./home/home.nix ]; }; }; }
-    ];
-  };
+nixpkgs.lib.nixosSystem {
+  inherit system;
+  specialArgs = inheritable;
+  modules = [
+    # allow extra packages
+    {
+      nixpkgs.config = {
+        allowUnfree = true;
+        allowBroken = true;
+        allowUnsupportedSystem = true;
+      };
+    }
 
-  vmware = lib.nixosSystem {
-    specialArgs = inheritable;
-    modules = [
-      ./configuration.nix
-      ./vmware/hardware.nix
-      ./vmware/configuration.nix
-      ./home/configuration.nix
-      home-manager.nixosModules.home-manager
-      { home-manager = hmConfig // { users.${user} = { imports = [ ./home/home.nix ]; }; }; }
-    ];
-  };
+    # nixos related configuration
+    ./configuration.nix
+    ./${host}/hardware.nix
+    ./${host}/configuration.nix
+
+    # home-manager related configuration
+    home-manager.nixosModules.home-manager
+    {
+      home-manager = {
+        useGlobalPkgs = true;
+        useUserPackages = true;
+        extraSpecialArgs = inheritable;
+        users.${username} = {
+          imports = [
+            ./home.nix
+            ./${host}/home.nix
+          ];
+        };
+      };
+    }
+  ];
 }

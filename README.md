@@ -8,28 +8,11 @@ This repository contains my personal NixOS configuration. By leveraging the decl
 sudo su
 git clone https://github.com/dsymbol/nixcfg
 cd nixcfg
-nano flake.nix # define user and hostname
-```
-
-### NixOS
-
-```bash
 nix-shell ./shells/partition.nix
 partition
 exit
 nixos-install --flake .#vmware
 reboot
-```
-
-### Home-Manager Standalone
-
-```bash
-sh <(curl -L https://nixos.org/nix/install) --daemon
-echo "experimental-features = nix-command flakes" | sudo tee -a /etc/nix/nix.conf
-nix-env -iA nixpkgs.home-manager
-home-manager switch --flake .#$USER
-which zsh | sudo tee -a /etc/shells
-chsh -s $(which zsh)
 ```
 
 ## Dynamic Nature of the Repository
