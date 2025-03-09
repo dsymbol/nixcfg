@@ -6,34 +6,36 @@
 
     home-manager.url = "github:nix-community/home-manager/master";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+
+    arkenfox-userjs = {
+      url = "github:arkenfox/user.js";
+      flake = false;
+    };
   };
 
-  outputs = { nixpkgs, home-manager, ... }@inputs:
+  outputs =
+    { nixpkgs, home-manager, ... }@inputs:
     let
-      system = "x86_64-linux";
-      user = "";
-      host = "";
+      username = "user";
 
-      pkgs = import nixpkgs {
-        inherit system;
-        config = {
-          allowBroken = true;
-          allowUnsupportedSystem = true;
-          allowUnfree = true;
-        };
+      mkSystem = import ./hosts {
+        inherit
+          nixpkgs
+          inputs
+          home-manager
+          username
+          ;
       };
-
     in
     {
-      nixosConfigurations = import ./hosts {
-        inherit (nixpkgs) lib;
-        inherit pkgs inputs home-manager user host;
+      nixosConfigurations.desktop = mkSystem {
+        host = "desktop";
+        system = "x86_64-linux";
       };
 
-      homeConfigurations.${user} = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
-        extraSpecialArgs = { inherit inputs user; };
-        modules = [ ./hosts/home/home.nix ];
+      nixosConfigurations.vmware = mkSystem {
+        host = "vmware";
+        system = "x86_64-linux";
       };
     };
 }
