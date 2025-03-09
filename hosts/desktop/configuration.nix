@@ -1,9 +1,10 @@
-{ pkgs, user, host, ... }:
+{ pkgs, host, ... }:
 
 {
   # Legacy BIOS
   # boot.loader.grub.device = "/dev/sda"
 
+  # UEFI
   boot = {
     loader = {
       efi = {
@@ -31,17 +32,17 @@
     # openssh.enable = true;
   };
 
-  # environment.plasma6.excludePackages = with pkgs.kdePackages; [
-  #   elisa
-  #   gwenview
-  #   okular
-  #   oxygen
-  #   khelpcenter
-  #   plasma-browser-integration
-  #   print-manager
-  #   spectacle
-  #   kwalletmanager
-  #   kinfocenter
-  # ];
+  environment.plasma6.excludePackages = with pkgs.kdePackages; [
+    elisa
+    gwenview
+    okular
+    oxygen
+    khelpcenter
+    plasma-browser-integration
+    print-manager
+    spectacle
+    kwalletmanager
+    kinfocenter
+  ];
 
 }

@@ -1,8 +1,11 @@
-{user, ...}:
+{username, ...}:
 
 { 
   virtualisation.vmware.guest.enable = true; 
-  services.displayManager.autoLogin.enable = true;
-  services.displayManager.autoLogin.user = user;
   services.openssh.enable = true;
+  services.displayManager.autoLogin.enable = true;
+  services.displayManager.autoLogin.user = username;
+  # wayland slow in vmware
+  services.xserver.enable = true;
+  services.displayManager.defaultSession = "plasmax11";
 }

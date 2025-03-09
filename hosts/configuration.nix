@@ -1,4 +1,4 @@
-{ pkgs, user, ... }:
+{ pkgs, username, ... }:
 
 {
   time.timeZone = "Asia/Jerusalem";
@@ -9,18 +9,19 @@
 
   # System wide packages
   environment.systemPackages = with pkgs; [
+    firefox
     vim
     nano
-    firefox
     python3
     git
     wget
     curl
     zip
     unzip
-    xclip
     htop
-    nixpkgs-fmt
+    nixd
+    nixfmt-rfc-style
+    tldr
   ];
 
   # System wide zsh shell
@@ -38,7 +39,7 @@
   };
 
   # Enable sound with pipewire.
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -56,7 +57,7 @@
   virtualisation.docker.enable = true;
   
   # User configuration
-  users.users.${user} = {
+  users.users.${username} = {
     isNormalUser = true;
     initialPassword = " ";
     extraGroups = [ "wheel" "networkmanager" "docker" ];
